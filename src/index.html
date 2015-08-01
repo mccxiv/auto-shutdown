@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
+        <link rel="import" href="bower_components/neon-animation/neon-animated-pages.html">
+        <link rel="import" href="bower_components/neon-animation/neon-animatable.html">
+        <link rel="import" href="bower_components/neon-animation/neon-animations.html">
+        <link rel="import" href="bower_components/paper-button/paper-button.html">
+        <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+        <link rel="import" href="bower_components/iron-icons/av-icons.html">
+        <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+        <link rel="import" href="bower_components/paper-styles/paper-styles.html">
+        <link rel="import" href="bower_components/paper-styles/paper-styles-classes.html">
+        <link rel="import" href="bower_components/paper-styles/color.html">
+        <title></title>
+        <style is="custom-style">
+            body {
+                margin: 0;
+                background-color: black;
+                color: #3d3d3d;
+                @apply(--paper-font-body1);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            .cards-page > * {
+                @apply(--layout-vertical);
+                @apply(--layout-center-center);
+                cursor: pointer;
+                width: calc(100% / 3);
+                height: calc(100% / 3);
+                border: 3px solid transparent;
+                float: left;
+                background-clip: content-box;
+                position: relative;
+            }
+
+            .big-icon {
+                --iron-icon-width: 64px;
+                --iron-icon-height: 64px;
+            }
+
+            .cards-page {
+                padding: 3px;
+                background-color: #424242;
+            }
+
+            .cards-page .footer {
+                @apply(--layout-horizontal);
+                position: absolute;
+                bottom: 0;
+                padding: 5px 20px;
+                width: 100%;
+            }
+
+            .cards-page .footer > * {
+                @apply(--layout-self-center);
+            }
+
+            .time-selection-page {
+            }
+
+            .shutdown {
+                width: calc(100% / 3 * 2);
+                height: calc(100% / 3 * 2);
+            }
+
+            .restart {
+                height: calc(100% / 3 * 2);
+            }
+
+            .info {
+                width: calc(100% / 3);
+            }
+
+            .hibernate {
+                width: calc(100% / 3 * 2);
+            }
+
+            .back-button {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+            }
+
+            .fullbleed {
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+            }
+
+            paper-button {
+                background: var(--paper-grey-300);
+            }
+
+            .yellow-200 {background-color: var(--paper-yellow-200);}
+            .yellow-500 {background-color: var(--paper-yellow-500);}
+            .grey-100 {background-color: var(--paper-grey-100);}
+            .grey-400 {background-color: var(--paper-grey-400);}
+            .green-200 {background-color: var(--paper-green-200);}
+            .green-500 {background-color: var(--paper-green-500);}
+            .deep-orange-300 {background-color: var(--paper-deep-orange-300);}
+            .deep-orange-600 {background-color: var(--paper-deep-orange-600);}
+        </style>
+    </head>
+    <body>
+        <template is="dom-bind" id="app">
+            <neon-animated-pages id="pagePickOperation" class="fullbleed layout vertical" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+                <neon-animatable class="cards-page">
+                    <div class="shutdown grey-100" on-click="pagePickTimer" data-color-class="grey-100" data-operation="shutdown">
+                        <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
+                        <div class="footer grey-400">
+                            <span class="flex">Shutdown</span>
+                            <iron-icon icon="arrow-forward"></iron-icon>
+                        </div>
+                    </div>
+                    <div class="restart yellow-200" on-click="pagePickTimer" data-color-class="yellow-200" data-operation="restart">
+                        <iron-icon class="big-icon" icon="icons:refresh"></iron-icon>
+                        <div class="footer yellow-500">
+                            <span class="flex">Restart</span>
+                            <iron-icon icon="arrow-forward"></iron-icon>
+                        </div>
+                    </div>
+                    <div class="hibernate green-200" on-click="pagePickTimer" data-color-class="green-200" data-operation="hibernate">
+                        <iron-icon class="big-icon" icon="av:pause-circle-outline"></iron-icon>
+                        <div class="footer green-500">
+                            <span class="flex">Hibernate</span>
+                            <iron-icon icon="arrow-forward"></iron-icon>
+                        </div>
+                    </div>
+                    <div class="info layout deep-orange-300" data-color-class="deep-orange-300" on-click="info">
+                        <iron-icon class="big-icon" icon="icons:favorite"></iron-icon>
+                        <div class="footer deep-orange-600">
+                            <span class="flex">Favorite</span>
+                            <iron-icon icon="arrow-forward"></iron-icon>
+                        </div>
+                    </div>
+                </neon-animatable>
+                <neon-animatable id="pagePickTimer" data-static-classes="time-selection-page layout vertical center-center" class$="[[calcPagePickTimerClasses(colorClass)]]">
+                    <paper-icon-button class="back-button" icon="arrow-back" on-click="pagePickOperation"></paper-icon-button>
+                    <div class="buttons">
+                        <h1><span>[[capitalize(operation)]]</span> in...</h1>
+                        <paper-button raised on-click="pageStartTimer" data-seconds="10">10 Seconds</paper-button>
+                        <paper-button raised on-click="pageStartTimer" data-seconds="1800">30 Minutes</paper-button>
+                        <paper-button raised on-click="pageStartTimer" data-seconds="3600">1 Hour</paper-button>
+                        <paper-button raised on-click="pageStartTimer" data-seconds="7200">2 Hours</paper-button>
+                        <paper-button raised on-click="pageStartTimer" data-seconds="14400">4 Hours</paper-button>
+                    </div>
+                </neon-animatable>
+                <neon-animatable id="pageStartTimer" data-static-classes="timer-page layout vertical center-center" class$="[[calcPageStartTimerClasses(colorClass)]]">
+                    <paper-icon-button class="back-button" icon="arrow-back" on-click="pagePickTimer"></paper-icon-button>
+                    <div class="timer-page-content">
+                        <h1>This computer will <span>[[operation]]</span> in...</h1>
+                        TIMER HERE
+                    </div>
+                </neon-animatable>
+                <neon-animatable class="info-page">
+                    INFO SCREEN
+                </neon-animatable>
+            </neon-animated-pages>
+        </template>
+
+        <script>
+
+            var ipc = require('ipc');
+
+            var scope = document.getElementById('app');
+            scope.selected = 0;
+            scope.operation = '';
+            scope.colorClass = '';
+
+            scope.pagePickTimer = function(e) {
+                if (e.currentTarget.dataset.colorClass) scope.colorClass = e.currentTarget.dataset.colorClass;
+                if (e.currentTarget.dataset.operation) scope.operation = e.currentTarget.dataset.operation;
+                scope.selected = 1;
+            };
+
+            scope.pagePickOperation = function() {
+                scope.selected = 0;
+            };
+
+            scope.info = function() {
+                scope.selected = 3;
+            };
+
+            scope.capitalize = function(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            };
+
+            scope.pageStartTimer = function(e) {
+                var seconds = e.currentTarget.dataset.seconds;
+                if (seconds) ipc.send(scope.operation, seconds);
+                scope.selected = 2;
+            };
+
+            scope.calcPagePickTimerClasses = function(colorClass) {
+                return scope.$.pagePickTimer.dataset.staticClasses + ' ' + colorClass;
+            };
+
+            scope.calcPageStartTimerClasses = function(colorClass) {
+                return scope.$.pageStartTimer.dataset.staticClasses + ' ' + colorClass;
+            };
+
+        </script>
+    </body>
+</html>
