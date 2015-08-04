@@ -1,0 +1,63 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="timer-selection">
+
+    <style>
+        :host * {box-sizing: border-box;}
+
+        :host {
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+        }
+
+        paper-button {
+            background: lightgrey;
+        }
+
+    </style>
+
+    <template>
+        <paper-icon-button class="back-button" icon="arrow-back" on-click="back"></paper-icon-button>
+        <div class="buttons">
+            <h1><span>[[capitalize(operation)]]</span> in...</h1>
+            <paper-button raised on-click="timer" data-seconds="10">10 Seconds</paper-button>
+            <paper-button raised on-click="timer" data-seconds="1800">30 Minutes</paper-button>
+            <paper-button raised on-click="timer" data-seconds="3600">1 Hour</paper-button>
+            <paper-button raised on-click="timer" data-seconds="7200">2 Hours</paper-button>
+            <paper-button raised on-click="timer" data-seconds="14400">4 Hours</paper-button>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'timer-selection',
+
+            properties: {
+                operation: {},
+                primaryColor: {},
+                secondaryColor: {}
+            },
+
+            timer: function(e) {
+                this.fire('timer', e.currentTarget.dataset.seconds);
+            },
+
+            back: function() {
+                this.fire('back');
+            },
+
+            capitalize: function(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+        });
+    </script>
+
+</dom-module>

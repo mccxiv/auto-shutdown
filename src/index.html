@@ -13,8 +13,14 @@
         <link rel="import" href="bower_components/paper-styles/paper-styles.html">
         <link rel="import" href="bower_components/paper-styles/paper-styles-classes.html">
         <link rel="import" href="bower_components/paper-styles/color.html">
+
+        <link rel="import" href="components/main-grid.html">
+        <link rel="import" href="components/timer-selection.html">
+
         <title></title>
         <style is="custom-style">
+            * {box-sizing: border-box;}
+
             body {
                 margin: 0;
                 background-color: black;
@@ -22,62 +28,9 @@
                 @apply(--paper-font-body1);
             }
 
-            * {
-                box-sizing: border-box;
-            }
-
-            .cards-page > * {
-                @apply(--layout-vertical);
-                @apply(--layout-center-center);
-                cursor: pointer;
-                width: calc(100% / 3);
-                height: calc(100% / 3);
-                border: 3px solid transparent;
-                float: left;
-                background-clip: content-box;
-                position: relative;
-            }
-
-            .big-icon {
-                --iron-icon-width: 64px;
-                --iron-icon-height: 64px;
-            }
-
-            .cards-page {
-                padding: 3px;
-                background-color: #424242;
-            }
-
-            .cards-page .footer {
-                @apply(--layout-horizontal);
-                position: absolute;
-                bottom: 0;
-                padding: 5px 20px;
+            #pages > neon-animatable > * {
+                height: 100%;
                 width: 100%;
-            }
-
-            .cards-page .footer > * {
-                @apply(--layout-self-center);
-            }
-
-            .time-selection-page {
-            }
-
-            .shutdown {
-                width: calc(100% / 3 * 2);
-                height: calc(100% / 3 * 2);
-            }
-
-            .restart {
-                height: calc(100% / 3 * 2);
-            }
-
-            .info {
-                width: calc(100% / 3);
-            }
-
-            .hibernate {
-                width: calc(100% / 3 * 2);
             }
 
             .back-button {
@@ -95,67 +48,19 @@
             paper-button {
                 background: var(--paper-grey-300);
             }
-
-            .yellow-200 {background-color: var(--paper-yellow-200);}
-            .yellow-500 {background-color: var(--paper-yellow-500);}
-            .grey-100 {background-color: var(--paper-grey-100);}
-            .grey-400 {background-color: var(--paper-grey-400);}
-            .green-200 {background-color: var(--paper-green-200);}
-            .green-500 {background-color: var(--paper-green-500);}
-            .deep-orange-300 {background-color: var(--paper-deep-orange-300);}
-            .deep-orange-600 {background-color: var(--paper-deep-orange-600);}
         </style>
     </head>
     <body>
         <template is="dom-bind" id="app">
-            <neon-animated-pages id="pagePickOperation" class="fullbleed layout vertical" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
-                <neon-animatable class="cards-page">
-                    <div class="shutdown grey-100" on-click="pagePickTimer" data-color-class="grey-100" data-operation="shutdown">
-                        <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
-                        <div class="footer grey-400">
-                            <span class="flex">Shutdown</span>
-                            <iron-icon icon="arrow-forward"></iron-icon>
-                        </div>
-                    </div>
-                    <div class="restart yellow-200" on-click="pagePickTimer" data-color-class="yellow-200" data-operation="restart">
-                        <iron-icon class="big-icon" icon="icons:refresh"></iron-icon>
-                        <div class="footer yellow-500">
-                            <span class="flex">Restart</span>
-                            <iron-icon icon="arrow-forward"></iron-icon>
-                        </div>
-                    </div>
-                    <div class="hibernate green-200" on-click="pagePickTimer" data-color-class="green-200" data-operation="hibernate">
-                        <iron-icon class="big-icon" icon="av:pause-circle-outline"></iron-icon>
-                        <div class="footer green-500">
-                            <span class="flex">Hibernate</span>
-                            <iron-icon icon="arrow-forward"></iron-icon>
-                        </div>
-                    </div>
-                    <div class="info layout deep-orange-300" data-color-class="deep-orange-300" on-click="info">
-                        <iron-icon class="big-icon" icon="icons:favorite"></iron-icon>
-                        <div class="footer deep-orange-600">
-                            <span class="flex">Favorite</span>
-                            <iron-icon icon="arrow-forward"></iron-icon>
-                        </div>
-                    </div>
+            <neon-animated-pages id="pages" class="fullbleed layout vertical pages" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+                <neon-animatable>
+                    <main-grid primary-color="{{primaryColor}}" secondary-color="{{secondaryColor}}" operation="{{operation}}"></main-grid>
                 </neon-animatable>
-                <neon-animatable id="pagePickTimer" data-static-classes="time-selection-page layout vertical center-center" class$="[[calcPagePickTimerClasses(colorClass)]]">
-                    <paper-icon-button class="back-button" icon="arrow-back" on-click="pagePickOperation"></paper-icon-button>
-                    <div class="buttons">
-                        <h1><span>[[capitalize(operation)]]</span> in...</h1>
-                        <paper-button raised on-click="pageStartTimer" data-seconds="10">10 Seconds</paper-button>
-                        <paper-button raised on-click="pageStartTimer" data-seconds="1800">30 Minutes</paper-button>
-                        <paper-button raised on-click="pageStartTimer" data-seconds="3600">1 Hour</paper-button>
-                        <paper-button raised on-click="pageStartTimer" data-seconds="7200">2 Hours</paper-button>
-                        <paper-button raised on-click="pageStartTimer" data-seconds="14400">4 Hours</paper-button>
-                    </div>
+                <neon-animatable>
+                    <timer-selection operation="[[operation]]"></timer-selection>
                 </neon-animatable>
-                <neon-animatable id="pageStartTimer" data-static-classes="timer-page layout vertical center-center" class$="[[calcPageStartTimerClasses(colorClass)]]">
-                    <paper-icon-button class="back-button" icon="arrow-back" on-click="pagePickTimer"></paper-icon-button>
-                    <div class="timer-page-content">
-                        <h1>This computer will <span>[[operation]]</span> in...</h1>
-                        TIMER HERE
-                    </div>
+                <neon-animatable data-static-classes="timer-page layout vertical center-center">
+
                 </neon-animatable>
                 <neon-animatable class="info-page">
                     INFO SCREEN
@@ -164,11 +69,34 @@
         </template>
 
         <script>
-
             var ipc = require('ipc');
+            var app = document.getElementById('app');
 
-            var scope = document.getElementById('app');
-            scope.selected = 0;
+            app.addEventListener('dom-change', function(e) {
+                e.target.removeEventListener(e.type, arguments.callee);
+                var grid = app.$.pages.querySelector('main-grid');
+                var timerSelection = app.$.pages.querySelector('timer-selection');
+
+                app.selected = 0;
+
+                grid.addEventListener('operation', function() {
+                    var timerPages = ['shutdown', 'restart', 'hibernate'];
+                    if (timerPages.indexOf(app.operation) > -1) app.selected = 1;
+                });
+
+                timerSelection.addEventListener('timer', function(seconds) {
+                    ipc.send(app.operation, {seconds: seconds});
+                    app.selected = 2;
+                });
+
+                timerSelection.addEventListener('back', function() {
+                   app.selected = 0;
+                });
+            });
+
+
+            var scope = {};
+
             scope.operation = '';
             scope.colorClass = '';
 

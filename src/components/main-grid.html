@@ -1,0 +1,140 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+
+<dom-module id="main-grid">
+
+    <style>
+        :host * {box-sizing: border-box;}
+
+        .cards {
+            padding: 3px;
+            width: 100%;
+            height: 100%;
+            background-color: #424242;
+        }
+
+        .cards:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .cards > * {
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+            cursor: pointer;
+            width: calc(100% / 3);
+            height: calc(100% / 3);
+            border: 3px solid transparent;
+            float: left;
+            background-clip: content-box;
+            position: relative;
+        }
+
+        .big-icon {
+            --iron-icon-width: 64px;
+            --iron-icon-height: 64px;
+        }
+
+        .footer {
+            @apply(--layout-horizontal);
+            position: absolute;
+            bottom: 0;
+            padding: 5px 20px;
+            width: 100%;
+        }
+
+        .footer > * {
+            @apply(--layout-self-center);
+        }
+
+        #shutdown {
+            width: calc(100% / 3 * 2);
+            height: calc(100% / 3 * 2);
+        }
+
+        #restart {
+            height: calc(100% / 3 * 2);
+        }
+
+        #info {
+            width: calc(100% / 3);
+        }
+
+        #hibernate {
+            width: calc(100% / 3 * 2);
+        }
+
+        .yellow-200 {background-color: var(--paper-yellow-200);}
+        .yellow-500 {background-color: var(--paper-yellow-500);}
+        .grey-100 {background-color: var(--paper-grey-100);}
+        .grey-400 {background-color: var(--paper-grey-400);}
+        .green-200 {background-color: var(--paper-green-200);}
+        .green-500 {background-color: var(--paper-green-500);}
+        .deep-orange-300 {background-color: var(--paper-deep-orange-300);}
+        .deep-orange-600 {background-color: var(--paper-deep-orange-600);}
+    </style>
+
+    <template>
+        <div class="cards">
+            <div id="shutdown" class="grey-100" on-click="choose" data-operation="shutdown">
+                <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
+                <div class="footer grey-400">
+                    <span class="flex">Shutdown</span>
+                    <iron-icon icon="arrow-forward"></iron-icon>
+                </div>
+            </div>
+            <div id="restart" class="yellow-200" on-click="choose" data-operation="restart">
+                <iron-icon class="big-icon" icon="icons:refresh"></iron-icon>
+                <div class="footer yellow-500">
+                    <span class="flex">Restart</span>
+                    <iron-icon icon="arrow-forward"></iron-icon>
+                </div>
+            </div>
+            <div id="hibernate" class="green-200" on-click="choose" data-operation="hibernate">
+                <iron-icon class="big-icon" icon="av:pause-circle-outline"></iron-icon>
+                <div class="footer green-500">
+                    <span class="flex">Hibernate</span>
+                    <iron-icon icon="arrow-forward"></iron-icon>
+                </div>
+            </div>
+            <div id="info" class="deep-orange-300" on-click="choose" data-operation="info">
+                <iron-icon class="big-icon" icon="icons:favorite"></iron-icon>
+                <div class="footer deep-orange-600">
+                    <span class="flex">Info</span>
+                    <iron-icon icon="arrow-forward"></iron-icon>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'main-grid',
+
+            properties: {
+                operation: {
+                    notify: true,
+                    readOnly: true
+                },
+                primaryColor: {
+                    notify: true,
+                    readOnly: true
+                },
+                secondaryColor: {
+                    notify: true,
+                    readOnly: true
+                }
+            },
+
+            choose: function(e) {
+                this._setOperation(e.currentTarget.dataset.operation);
+                this._setPrimaryColor(getComputedStyle(e.currentTarget).getPropertyValue('background-color'));
+                this.fire('operation');
+            }
+        });
+    </script>
+
+</dom-module>

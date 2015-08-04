@@ -1,0 +1,64 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="timer-selection">
+
+    <style>
+        :host * {box-sizing: border-box;}
+
+        :host {
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+        }
+
+        paper-button {
+            background: lightgrey;
+        }
+
+    </style>
+
+    <template>
+        <paper-icon-button class="back-button" icon="arrow-back" on-click="_cancel"></paper-icon-button>
+        <div class="timer-page-content">
+            <h1>This computer will <span>[[operation]]</span> in...</h1>
+            <span>[[_countdown()]]</span>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'timer-selection',
+
+            properties: {
+                operation: {},
+                primaryColor: {},
+                secondaryColor: {}
+            },
+
+            start: function(seconds) {
+                this._to = setTimeout(function() {
+
+                }, seconds * 1000)
+            },
+
+            _to : null,
+
+            _cancel: function() {
+                clearTimeout(this._to);
+                this.fire('cancel');
+            },
+
+            _countdown: function() {
+
+            }
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,6 @@
+{
+  "name": "auto-shutdown-project-files",
+  "dependencies": {
+    "gulp": "^3.9.0"
+  }
+}
