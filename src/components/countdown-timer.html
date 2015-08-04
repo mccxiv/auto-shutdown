@@ -55,9 +55,16 @@
             },
 
             _secondsToClock: function(seconds) {
-                var minutes = Math.floor(seconds / 60);
-                var remainder = seconds - minutes * 60;
-                return minutes + ':' + ("00" + remainder).slice(-2);
+                var hours, minutes;
+                hours = Math.floor(seconds / 3600);
+                seconds = seconds - hours * 3600;
+                minutes = Math.floor(seconds / 60);
+                seconds = seconds - minutes * 60;
+                return hours + ':' + this._pad(minutes) + ':' + this._pad(seconds);
+            },
+
+            _pad: function(num) {
+                return ("00" + num).slice(-2);
             },
 
             _primaryColorChanged: function() {
