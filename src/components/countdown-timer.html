@@ -12,6 +12,10 @@
             @apply(--layout-center-center);
         }
 
+        h1 {
+            text-align: center;
+        }
+
         .back-button {
             position: absolute;
             top: 15px;
@@ -28,7 +32,7 @@
         <paper-icon-button class="back-button" icon="arrow-back" on-click="_cancel"></paper-icon-button>
         <div class="timer-page-content">
             <h1>This computer will <span>[[operation]]</span> in...</h1>
-            <span>[[_secondsToClock(secondsLeft)]]</span>
+            <h1>[[_secondsToClock(secondsLeft)]]</h1>
         </div>
     </template>
 

@@ -26,7 +26,6 @@ function shutdown(event, seconds) {
 }
 
 function restart(event, seconds) {
-	console.log('RESTART!', arguments);
 	var commands = {win32: 'shutdown -r -f -t 1'};
 	runCommand(commands[process.platform], seconds);
 }
@@ -46,16 +45,12 @@ function sendSeconds(event) {
  * @param {Number} delay - In seconds
  */
 function runCommand(command, delay) {
-	console.log('runCommand delay is ', delay);
 	delay = delay || 10;
 	operationDate = new Date(Date.now() + delay * 1000);
-	//operationDate.setSeconds(operationDate.getSeconds() + delay);
-
 
 	checkTime();
 
 	function checkTime() {
-		console.log('checkTime')
 		if (operationDate) {
 			var until = secondsUntil(operationDate);
 			console.log(until + ' seconds until command');
