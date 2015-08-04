@@ -4,6 +4,7 @@ var exec = require('child_process').exec;
 var Window = require('browser-window');
 var mainWindow;
 var operationDate;
+var timer;
 
 app.on('ready', load);
 app.on('window-all-closed', close);
@@ -14,9 +15,8 @@ ipc.on('shutdown', shutdown);
 ipc.on('hibernate', hibernate);
 ipc.on('seconds-left?', sendSeconds);
 
-console.log('Node');
-
 function cancel() {
+	if (timer) clearTimeout(timer);
 	operationDate = null;
 }
 
@@ -26,6 +26,7 @@ function shutdown(event, seconds) {
 }
 
 function restart(event, seconds) {
+	console.log('RESTART!', arguments);
 	var commands = {win32: 'shutdown -r -f -t 1'};
 	runCommand(commands[process.platform], seconds);
 }
@@ -45,16 +46,21 @@ function sendSeconds(event) {
  * @param {Number} delay - In seconds
  */
 function runCommand(command, delay) {
+	console.log('runCommand delay is ', delay);
 	delay = delay || 10;
-	operationDate = new Date();
-	operationDate.setSeconds(operationDate.getSeconds() + delay);
+	operationDate = new Date(Date.now() + delay * 1000);
+	//operationDate.setSeconds(operationDate.getSeconds() + delay);
+
+
+	checkTime();
 
 	function checkTime() {
+		console.log('checkTime')
 		if (operationDate) {
 			var until = secondsUntil(operationDate);
 			console.log(until + ' seconds until command');
 			if (until === 0) console.log('EXECUTING COMMAND NOW!', command);
-			else setTimeout(checkTime, 3000);
+			else timer = setTimeout(checkTime, 3000);
 		}
 	}
 }

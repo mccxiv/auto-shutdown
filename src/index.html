@@ -16,6 +16,7 @@
 
         <link rel="import" href="components/main-grid.html">
         <link rel="import" href="components/timer-selection.html">
+        <link rel="import" href="components/countdown-timer.html">
 
         <title></title>
         <style is="custom-style">
@@ -59,8 +60,8 @@
                 <neon-animatable>
                     <timer-selection primary-color="[[primaryColor]]" operation="[[operation]]"></timer-selection>
                 </neon-animatable>
-                <neon-animatable data-static-classes="timer-page layout vertical center-center">
-
+                <neon-animatable>
+                    <countdown-timer primary-color="[[primaryColor]]" operation="[[operation]]" seconds-left="[[secondsLeft]]"></countdown-timer>
                 </neon-animatable>
                 <neon-animatable class="info-page">
                     INFO SCREEN
@@ -76,6 +77,7 @@
                 e.target.removeEventListener(e.type, arguments.callee);
                 var grid = app.$.pages.querySelector('main-grid');
                 var timerSelection = app.$.pages.querySelector('timer-selection');
+                var countdownTimer = app.$.pages.querySelector('countdown-timer');
 
                 app.selected = 0;
 
@@ -84,53 +86,35 @@
                     if (timerPages.indexOf(app.operation) > -1) app.selected = 1;
                 });
 
-                timerSelection.addEventListener('timer', function(seconds) {
-                    ipc.send(app.operation, {seconds: seconds});
+                timerSelection.addEventListener('timer', function(e) {
+                    startOperation(app.operation, e.detail);
                     app.selected = 2;
                 });
 
                 timerSelection.addEventListener('back', function() {
                    app.selected = 0;
                 });
+
+                countdownTimer.addEventListener('cancel', function() {
+                    ipc.send('cancel');
+                    app.selected = 1;
+                })
             });
 
+            function startOperation(operation, seconds) {
+                console.log('sending', arguments);
+                ipc.send(operation, seconds);
+                requestSecondsLeft();
+            }
 
-            var scope = {};
+            ipc.on('seconds-left', function(e, seconds) {
+                app.secondsLeft = seconds;
+                if (seconds) setTimeout(requestSecondsLeft, 500);
+            });
 
-            scope.operation = '';
-            scope.colorClass = '';
-
-            scope.pagePickTimer = function(e) {
-                if (e.currentTarget.dataset.colorClass) scope.colorClass = e.currentTarget.dataset.colorClass;
-                if (e.currentTarget.dataset.operation) scope.operation = e.currentTarget.dataset.operation;
-                scope.selected = 1;
-            };
-
-            scope.pagePickOperation = function() {
-                scope.selected = 0;
-            };
-
-            scope.info = function() {
-                scope.selected = 3;
-            };
-
-            scope.capitalize = function(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1);
-            };
-
-            scope.pageStartTimer = function(e) {
-                var seconds = e.currentTarget.dataset.seconds;
-                if (seconds) ipc.send(scope.operation, seconds);
-                scope.selected = 2;
-            };
-
-            scope.calcPagePickTimerClasses = function(colorClass) {
-                return scope.$.pagePickTimer.dataset.staticClasses + ' ' + colorClass;
-            };
-
-            scope.calcPageStartTimerClasses = function(colorClass) {
-                return scope.$.pageStartTimer.dataset.staticClasses + ' ' + colorClass;
-            };
+            function requestSecondsLeft() {
+                ipc.send('seconds-left?');
+            }
 
         </script>
     </body>
