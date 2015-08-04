@@ -3,7 +3,7 @@ var ipc = require('ipc');
 var exec = require('child_process').exec;
 var Window = require('browser-window');
 var mainWindow;
-var timer;
+var operationDate;
 
 app.on('ready', load);
 app.on('window-all-closed', close);
@@ -12,11 +12,12 @@ ipc.on('cancel', cancel);
 ipc.on('restart', restart);
 ipc.on('shutdown', shutdown);
 ipc.on('hibernate', hibernate);
+ipc.on('seconds-left?', sendSeconds);
 
 console.log('Node');
 
 function cancel() {
-	if (timer) clearTimeout(timer);
+	operationDate = null;
 }
 
 function shutdown(event, seconds) {
@@ -34,6 +35,10 @@ function hibernate(event, seconds) {
 	runCommand(commands[process.platform], seconds);
 }
 
+function sendSeconds(event) {
+	event.sender.send('seconds-left', secondsUntil(operationDate));
+}
+
 /**
  * Runs a shell command
  * @param {String} command
@@ -41,11 +46,30 @@ function hibernate(event, seconds) {
  */
 function runCommand(command, delay) {
 	delay = delay || 10;
-	console.log('EXECUTING COMMAND IN A BIT...', command);
-	timer = setTimeout(function() {
-		//exec(commands[process.platform]);
-		console.log('EXECUTING COMMAND NOW!', command);
-	}, delay * 1000);
+	operationDate = new Date();
+	operationDate.setSeconds(operationDate.getSeconds() + delay);
+
+	function checkTime() {
+		if (operationDate) {
+			var until = secondsUntil(operationDate);
+			console.log(until + ' seconds until command');
+			if (until === 0) console.log('EXECUTING COMMAND NOW!', command);
+			else setTimeout(checkTime, 3000);
+		}
+	}
+}
+
+/**
+ * Gives the number of seconds until date,
+ * it stops at 0 (does not go negative)
+ * @param {Date} date
+ * @returns {Number|Boolean}
+ */
+function secondsUntil(date) {
+	if (!date) return false;
+	var mSec = date.getTime() - Date.now();
+	var sec = Math.floor(mSec / 1000);
+	return sec < 0? 0 : sec;
 }
 
 function load() {
