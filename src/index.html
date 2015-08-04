@@ -54,10 +54,10 @@
         <template is="dom-bind" id="app">
             <neon-animated-pages id="pages" class="fullbleed layout vertical pages" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
                 <neon-animatable>
-                    <main-grid primary-color="{{primaryColor}}" secondary-color="{{secondaryColor}}" operation="{{operation}}"></main-grid>
+                    <main-grid primary-color="{{primaryColor}}" operation="{{operation}}"></main-grid>
                 </neon-animatable>
                 <neon-animatable>
-                    <timer-selection operation="[[operation]]"></timer-selection>
+                    <timer-selection primary-color="[[primaryColor]]" operation="[[operation]]"></timer-selection>
                 </neon-animatable>
                 <neon-animatable data-static-classes="timer-page layout vertical center-center">
 
