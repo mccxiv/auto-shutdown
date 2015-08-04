@@ -74,7 +74,18 @@ function secondsUntil(date) {
 }
 
 function load() {
-	mainWindow = new Window({});
+
+	var windowOpts = {
+		'use-content-size': true,
+		'min-width': 480,
+		'min-height': 310,
+		width: 620,
+		height: 450,
+		title: 'Auto Shutdown',
+		'auto-hide-menu-bar': true
+	};
+
+	mainWindow = new Window(windowOpts);
 	mainWindow.loadUrl('file://' + __dirname + '/index.html');
 	mainWindow.openDevTools();
 
