@@ -23,7 +23,6 @@
 
         .cards > * {
             @apply(--layout-vertical);
-            @apply(--layout-center-center);
             cursor: pointer;
             width: calc(100% / 3);
             height: calc(100% / 3);
@@ -33,6 +32,12 @@
             position: relative;
         }
 
+        .icon-container {
+            @apply(--layout-vertical);
+            @apply(--layout-center-center);
+            @apply(--layout-flex);
+        }
+
         .big-icon {
             --iron-icon-width: 64px;
             --iron-icon-height: 64px;
@@ -40,8 +45,8 @@
 
         .footer {
             @apply(--layout-horizontal);
-            position: absolute;
-            bottom: 0;
+            /*position: absolute;
+            bottom: 0;*/
             padding: 5px 20px;
             width: 100%;
         }
@@ -80,28 +85,36 @@
     <template>
         <div class="cards">
             <div id="shutdown" class="grey-100" on-click="choose" data-operation="shutdown">
-                <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
+                <div class="icon-container">
+                    <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
+                </div>
                 <div class="footer grey-400">
                     <span class="flex">Shutdown</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
             </div>
             <div id="restart" class="yellow-200" on-click="choose" data-operation="restart">
-                <iron-icon class="big-icon" icon="icons:refresh"></iron-icon>
+                <div class="icon-container">
+                    <iron-icon class="big-icon" icon="icons:refresh"></iron-icon>
+                </div>
                 <div class="footer yellow-500">
                     <span class="flex">Restart</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
             </div>
             <div id="hibernate" class="green-200" on-click="choose" data-operation="hibernate">
-                <iron-icon class="big-icon" icon="av:pause-circle-outline"></iron-icon>
+                <div class="icon-container">
+                    <iron-icon class="big-icon" icon="av:pause-circle-outline"></iron-icon>
+                </div>
                 <div class="footer green-500">
                     <span class="flex">Hibernate</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
             </div>
             <div id="info" class="deep-orange-300" on-click="choose" data-operation="info">
-                <iron-icon class="big-icon" icon="icons:favorite"></iron-icon>
+                <div class="icon-container">
+                    <iron-icon class="big-icon" icon="icons:favorite"></iron-icon>
+                </div>
                 <div class="footer deep-orange-600">
                     <span class="flex">Info</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
