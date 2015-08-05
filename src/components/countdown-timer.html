@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="countdown-timer">
@@ -22,6 +24,18 @@
             left: 15px;
         }
 
+        .info {
+            position: absolute;
+            width: 70%;
+            margin: 0 auto;
+            padding: 16px;
+            bottom: 13px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background-color: whitesmoke;
+        }
+
         paper-button {
             background: lightgrey;
         }
@@ -34,6 +48,9 @@
             <h1>This computer will <span>[[operation]]</span> in...</h1>
             <h1>[[_secondsToClock(secondsLeft)]]</h1>
         </div>
+        <paper-material class="info">
+            <iron-icon icon="icons:info"></iron-icon> Going back or closing the app will cancel the timer.
+        </paper-material>
     </template>
 
     <script>
