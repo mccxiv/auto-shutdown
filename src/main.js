@@ -35,12 +35,8 @@ function hibernate(event, seconds) {
 	runCommand(commands[process.platform], seconds);
 }
 
-function sendSeconds(event) {
-	event.sender.send('seconds-left', secondsUntil(operationDate));
-}
-
 /**
- * Runs a shell command
+ * Runs a shell command after a delay
  * @param {String} command
  * @param {Number} delay - In seconds
  */
@@ -73,8 +69,19 @@ function secondsUntil(date) {
 	return sec < 0? 0 : sec;
 }
 
-function load() {
+/**
+ * Replies to an event with another event
+ * that provides the number of seconds until shutdown
+ * @param event
+ */
+function sendSeconds(event) {
+	event.sender.send('seconds-left', secondsUntil(operationDate));
+}
 
+/**
+ * Creates the main program window
+ */
+function load() {
 	var windowOpts = {
 		'use-content-size': true,
 		'min-width': 480,
@@ -94,6 +101,9 @@ function load() {
 	});
 }
 
+/**
+ * Quits the app when the main window is closed
+ */
 function close() {
-	if (process.platform != 'darwin') app.quit();
+	app.quit();
 }

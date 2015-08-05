@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="UTF-8">
         <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout.html">
@@ -68,6 +68,7 @@
                 grid.addEventListener('operation', function() {
                     var timerPages = ['shutdown', 'restart', 'hibernate'];
                     if (timerPages.indexOf(app.operation) > -1) app.selected = 1;
+                    else if (app.operation === 'info') app.selected = 3;
                 });
 
                 timerSelection.addEventListener('timer', function(e) {
@@ -82,7 +83,12 @@
                 countdownTimer.addEventListener('cancel', function() {
                     ipc.send('cancel');
                     app.selected = 1;
-                })
+                });
+            });
+
+            ipc.on('seconds-left', function(seconds) {
+                app.secondsLeft = seconds;
+                if (seconds) setTimeout(requestSecondsLeft, 500);
             });
 
             function startOperation(operation, seconds) {
@@ -90,15 +96,9 @@
                 requestSecondsLeft();
             }
 
-            ipc.on('seconds-left', function(seconds) {
-                app.secondsLeft = seconds;
-                if (seconds) setTimeout(requestSecondsLeft, 500);
-            });
-
             function requestSecondsLeft() {
                 ipc.send('seconds-left?');
             }
-
         </script>
     </body>
 </html>
