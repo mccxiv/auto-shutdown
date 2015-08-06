@@ -6,10 +6,10 @@ var packager = require('electron-packager');
 var vulcanize = require('gulp-vulcanize');
 var winInstaller = require('electron-windows-installer');
 
+var VERSION = require('./src/package.json').version;
 var TEMP_BUILD_DIR = 'vulcanized';
 var BUILD_DIR = 'build';
 var DIST_DIR = 'dist';
-
 
 gulp.task('make-installer', function() {
 	return winInstaller({
@@ -68,7 +68,17 @@ gulp.task('package', function(cb) {
 		platform: 'all',
 		arch: 'ia32',
 		version: '0.30.2',
+		'app-version': VERSION,
 		icon: 'src/assets/logo-gray.ico',
+		'version-string': {
+			CompanyName: 'Mccxiv Software',
+			LegalCopyright: 'Copyright 2015 Andrea Stella. All rights reserved',
+			ProductVersion: VERSION,
+			FileVersion: VERSION,
+			OriginalFilename: 'auto-shutdown.exe',
+			FileDescription: 'Auto Shutdown',
+			ProductName: 'Auto Shutdown'
+		},
 		out: BUILD_DIR
 	};
 	packager(opts, cb);
