@@ -37,20 +37,27 @@
     </head>
     <body>
         <template is="dom-bind" id="app">
-            <neon-animated-pages id="pages" class="fullbleed layout vertical pages" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
-                <neon-animatable>
-                    <main-grid primary-color="{{primaryColor}}" operation="{{operation}}"></main-grid>
-                </neon-animatable>
-                <neon-animatable>
-                    <timer-selection primary-color="[[primaryColor]]" operation="[[operation]]"></timer-selection>
-                </neon-animatable>
-                <neon-animatable>
-                    <countdown-timer primary-color="[[primaryColor]]" operation="[[operation]]" seconds-left="[[secondsLeft]]"></countdown-timer>
-                </neon-animatable>
-                <neon-animatable class="info-page">
-                    INFO SCREEN
-                </neon-animatable>
-            </neon-animated-pages>
+            <div class="app fullbleed layout vertical">
+                <div class="header layout horizontal">
+                    <span class="flex"></span>
+                    <paper-icon-button icon="icons:hamburger"></paper-icon-button>
+                </div>
+                <neon-animated-pages id="pages" class="layout vertical pages flex" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+                    <neon-animatable>
+                        <main-grid primary-color="{{primaryColor}}" operation="{{operation}}"></main-grid>
+                    </neon-animatable>
+                    <neon-animatable>
+                        <timer-selection primary-color="[[primaryColor]]" operation="[[operation]]"></timer-selection>
+                    </neon-animatable>
+                    <neon-animatable>
+                        <countdown-timer primary-color="[[primaryColor]]" operation="[[operation]]" seconds-left="[[secondsLeft]]"></countdown-timer>
+                    </neon-animatable>
+                    <neon-animatable class="info-page">
+                        INFO SCREEN
+                    </neon-animatable>
+                </neon-animated-pages>
+            </div>
+
         </template>
 
         <script>
@@ -99,6 +106,14 @@
             function requestSecondsLeft() {
                 ipc.send('seconds-left?');
             }
+        </script>
+
+        <script>
+            document.addEventListener('keyup', function(e) {
+                if (e.which === 123) {
+                    ipc.send('open-dev-tools');
+                }
+            });
         </script>
     </body>
 </html>

@@ -17,6 +17,7 @@ ipc.on('restart', restart);
 ipc.on('shutdown', shutdown);
 ipc.on('hibernate', hibernate);
 ipc.on('seconds-left?', sendSeconds);
+ipc.on('open-dev-tools', devTools)
 
 function cancel() {
 	if (timer) clearTimeout(timer);
@@ -97,11 +98,16 @@ function load() {
 
 	mainWindow = new Window(windowOpts);
 	mainWindow.loadUrl('file://' + __dirname + '/index.html');
-	mainWindow.openDevTools();
+
+	//devTools();
 
 	mainWindow.on('closed', function() {
 		mainWindow = null; // For garbage collector
 	});
+}
+
+function devTools() {
+	mainWindow.openDevTools();
 }
 
 /**
