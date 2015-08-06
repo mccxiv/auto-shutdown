@@ -2,9 +2,12 @@ var app = require('app');
 var ipc = require('ipc');
 var exec = require('child_process').exec;
 var Window = require('browser-window');
+var startup = require('./modules/squirrel-startup.js');
 var mainWindow;
 var operationDate;
 var timer;
+
+if (startup()) return;
 
 app.on('ready', load);
 app.on('window-all-closed', close);

@@ -15,13 +15,13 @@ gulp.task('make-installer', function() {
 	return winInstaller({
 		appDirectory: BUILD_DIR + '/Auto-Shutdown-win32-ia32',
 		outputDirectory: DIST_DIR,
-		iconUrl: __dirname + 'src/assets/logo-gray.ico',
-		exe: 'Auto Shutdown.exe',
+		iconUrl: __dirname + '/src/assets/logo-gray.ico',
+		exe: 'Auto-Shutdown.exe',
 		setupExe: 'Auto Shutdown Setup.exe',
+		authors: 'Mccxiv Software',
 		title: 'Auto Shutdown',
-		setupIcon: __dirname + 'src/assets/logo-gray.ico'
-		//iconUrl: './src/assets/logo-gray.ico'
-	}); //.then(done).catch(done);
+		setupIcon: __dirname + '/src/assets/logo-gray.ico'
+	});
 });
 
 gulp.task('run-development', function(cb) {
@@ -48,6 +48,11 @@ gulp.task('copy-files', function() {
 		.pipe(gulp.dest(TEMP_BUILD_DIR));
 });
 
+gulp.task('copy-modules', function() {
+	return gulp.src(['src/modules/**'])
+		.pipe(gulp.dest(TEMP_BUILD_DIR+'/modules'));
+});
+
 gulp.task('clean-up-before', function(cb) {
 	del([TEMP_BUILD_DIR, BUILD_DIR, DIST_DIR], cb);
 });
@@ -70,7 +75,7 @@ gulp.task('package', function(cb) {
 });
 
 gulp.task('build', function(cb) {
-	sequence('clean-up-before', ['vulcanize', 'copy-files'], 'package', 'make-installer', 'clean-up-after', cb);
+	sequence('clean-up-before', ['vulcanize', 'copy-files', 'copy-modules'], 'package', 'make-installer', 'clean-up-after', cb);
 });
 
 gulp.task('default', ['build']);
