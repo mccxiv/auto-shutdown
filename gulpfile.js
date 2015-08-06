@@ -13,10 +13,10 @@ var DIST_DIR = 'dist';
 
 gulp.task('make-installer', function() {
 	return winInstaller({
-		appDirectory: BUILD_DIR + '/Auto-Shutdown-win32-ia32',
+		appDirectory: BUILD_DIR + '/Auto Shutdown-win32-ia32',
 		outputDirectory: DIST_DIR,
 		iconUrl: __dirname + '/src/assets/logo-gray.ico',
-		exe: 'Auto-Shutdown.exe',
+		exe: 'Auto Shutdown.exe',
 		setupExe: 'Auto Shutdown Setup.exe',
 		authors: 'Mccxiv Software',
 		title: 'Auto Shutdown',
@@ -64,7 +64,7 @@ gulp.task('clean-up-after', function(cb) {
 gulp.task('package', function(cb) {
 	var opts = {
 		dir: 'vulcanized',
-		name: 'Auto-Shutdown',
+		name: 'Auto Shutdown',
 		platform: 'all',
 		arch: 'ia32',
 		version: '0.30.2',
