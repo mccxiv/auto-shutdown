@@ -1,7 +1,13 @@
 {
   "name": "auto-shutdown",
-  "version": "1.0.0-beta.1",
+  "version": "0.0.1",
   "main": "main.js",
+  "author": {
+    "name": "Mccxiv Software",
+    "email": "adr.stella@gmail.com",
+    "url": "http://mccxiv.me"
+  },
+  "description": "Turns off your computer after some time, like a sleep timer on a TV",
   "dependencies": {
     "electron-prebuilt": "^0.30.1"
   }

@@ -4,6 +4,10 @@
     "gulp": "^3.9.0"
   },
   "devDependencies": {
-    "electron-packager": "^5.0.1"
+    "del": "^1.2.0",
+    "electron-packager": "^5.0.1",
+    "electron-windows-installer": "^1.1.0",
+    "gulp-vulcanize": "^6.0.1",
+    "run-sequence": "^1.1.2"
   }
 }
