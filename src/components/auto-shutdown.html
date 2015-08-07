@@ -1,0 +1,120 @@
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+<link rel="import" href="../components/main-grid.html">
+<link rel="import" href="../components/timer-selection.html">
+<link rel="import" href="../components/countdown-timer.html">
+
+<dom-module id="auto-shutdown">
+
+    <style>
+        :host * {box-sizing: border-box;}
+
+        :host {
+            @apply(--layout-vertical);
+            transition: background-color 500ms ease-out;
+        }
+
+        neon-animatable > * {
+            height: 100%;
+            width: 100%;
+        }
+
+        .header {
+            padding: 6px;
+        }
+    </style>
+
+    <template>
+        <div class="header layout horizontal">
+            <span class="flex"></span>
+            <paper-icon-button icon="icons:info-outline"></paper-icon-button>
+            <paper-icon-button icon="icons:favorite-border"></paper-icon-button>
+        </div>
+        <neon-animated-pages id="pages" class="layout vertical pages flex" selected="[[selected]]" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+            <neon-animatable>
+                <main-grid id="grid" primary-color="{{primaryColor}}" operation="{{operation}}"></main-grid>
+            </neon-animatable>
+            <neon-animatable>
+                <timer-selection id="timers" primary-color="[[primaryColor]]" operation="[[operation]]"></timer-selection>
+            </neon-animatable>
+            <neon-animatable>
+                <countdown-timer id="countdown" primary-color="[[primaryColor]]" operation="[[operation]]" seconds-left="[[secondsLeft]]"></countdown-timer>
+            </neon-animatable>
+            <neon-animatable class="info-page">
+                INFO SCREEN
+            </neon-animatable>
+        </neon-animated-pages>
+    </template>
+
+    <script>
+        var ipc = require('ipc');
+
+        Polymer({
+            is: 'auto-shutdown',
+
+            //selected: 0,
+
+            properties: {
+                primaryColor: {
+                    observer: 'primaryColorHandler'
+                },
+                selected: {
+                    value: 0
+                }
+            },
+
+            ready: function() {
+                var app = this;
+                var grid = app.$.grid;
+                var timerSelection = app.$.timers;
+                var countdownTimer = app.$.countdown;
+
+                ipc.on('seconds-left', function(seconds) {
+                    app.secondsLeft = seconds;
+                    if (seconds) setTimeout(app.requestSecondsLeft, 500);
+                });
+
+                grid.addEventListener('operation', function() {
+                    var timerPages = ['shutdown', 'restart', 'hibernate'];
+                    if (timerPages.indexOf(app.operation) > -1) app.selected = 1;
+                    else if (app.operation === 'info') app.selected = 3;
+                });
+
+                timerSelection.addEventListener('timer', function(e) {
+                    app.startOperation(app.operation, e.detail);
+                    app.selected = 2;
+                });
+
+                timerSelection.addEventListener('back', function() {
+                    app.selected = 0;
+                    app.set('primaryColor', 'white');
+                });
+
+                countdownTimer.addEventListener('cancel', function() {
+                    ipc.send('cancel');
+                    app.selected = 1;
+                });
+            },
+
+            primaryColorHandler: function() {
+                this.style.backgroundColor = this.primaryColor;
+            },
+
+            startOperation: function (operation, seconds) {
+                ipc.send(operation, seconds);
+                this.requestSecondsLeft();
+            },
+
+            requestSecondsLeft: function() {
+                ipc.send('seconds-left?');
+            }
+
+        });
+    </script>
+
+</dom-module>

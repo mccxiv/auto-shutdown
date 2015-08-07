@@ -99,8 +99,6 @@ function load() {
 	mainWindow = new Window(windowOpts);
 	mainWindow.loadUrl('file://' + __dirname + '/index.html');
 
-	//devTools();
-
 	mainWindow.on('closed', function() {
 		mainWindow = null; // For garbage collector
 	});

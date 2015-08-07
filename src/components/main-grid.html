@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
 
 <dom-module id="main-grid">
 
@@ -9,10 +10,9 @@
         :host * {box-sizing: border-box;}
 
         .cards {
-            padding: 3px;
+            padding: 0 6px 6px;
             width: 100%;
             height: 100%;
-            background-color: white;
         }
 
         .cards:after {
@@ -24,9 +24,9 @@
         .cards > * {
             @apply(--layout-vertical);
             cursor: pointer;
-            width: calc(100% / 3);
-            height: calc(100% / 3);
-            border: 3px solid transparent;
+            width: calc(100% / 3 - 12px);
+            height: calc(100% - 6px);
+            margin: 0 6px 6px;
             float: left;
             background-clip: content-box;
             position: relative;
@@ -53,7 +53,7 @@
             @apply(--layout-self-center);
         }
 
-        #shutdown {
+        /*#shutdown {
             width: calc(100% / 3 * 2);
             height: calc(100% / 3 * 2);
         }
@@ -68,7 +68,7 @@
 
         #hibernate {
             width: calc(100% / 3 * 2);
-        }
+        }*/
 
         .yellow-200 {background-color: var(--paper-yellow-200);}
         .yellow-500 {background-color: var(--paper-yellow-500);}
@@ -82,7 +82,7 @@
 
     <template>
         <div class="cards">
-            <div id="shutdown" class="grey-100" on-click="choose" data-operation="shutdown">
+            <paper-material id="shutdown" class="grey-100" on-click="choose" data-operation="shutdown">
                 <div class="icon-container">
                     <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
                 </div>
@@ -90,8 +90,8 @@
                     <span class="flex">Shutdown</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
-            </div>
-            <div id="restart" class="yellow-200" on-click="choose" data-operation="restart">
+            </paper-material>
+            <paper-material id="restart" class="yellow-200" on-click="choose" data-operation="restart">
                 <div class="icon-container">
                     <iron-icon class="big-icon" icon="icons:refresh"></iron-icon>
                 </div>
@@ -99,8 +99,8 @@
                     <span class="flex">Restart</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
-            </div>
-            <div id="hibernate" class="green-200" on-click="choose" data-operation="hibernate">
+            </paper-material>
+            <paper-material id="hibernate" class="green-200" on-click="choose" data-operation="hibernate">
                 <div class="icon-container">
                     <iron-icon class="big-icon" icon="av:pause-circle-outline"></iron-icon>
                 </div>
@@ -108,8 +108,8 @@
                     <span class="flex">Hibernate</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
-            </div>
-            <div id="info" class="deep-orange-300" on-click="choose" data-operation="info">
+            </paper-material>
+            <!--<div id="info" class="deep-orange-300" on-click="choose" data-operation="info">
                 <div class="icon-container">
                     <iron-icon class="big-icon" icon="icons:info-outline"></iron-icon>
                 </div>
@@ -117,7 +117,7 @@
                     <span class="flex">Info</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
-            </div>
+            </div>-->
         </div>
     </template>
 
@@ -131,8 +131,7 @@
                     readOnly: true
                 },
                 primaryColor: {
-                    notify: true,
-                    readOnly: true
+                    notify: true
                 },
                 secondaryColor: {
                     notify: true,
@@ -142,7 +141,7 @@
 
             choose: function(e) {
                 this._setOperation(e.currentTarget.dataset.operation);
-                this._setPrimaryColor(getComputedStyle(e.currentTarget).getPropertyValue('background-color'));
+                this.primaryColor = getComputedStyle(e.currentTarget).getPropertyValue('background-color');
                 this.fire('operation');
             }
         });
