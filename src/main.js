@@ -54,7 +54,7 @@ function runCommand(command, delay) {
 		if (operationDate) {
 			var until = secondsUntil(operationDate);
 			console.log(until + ' seconds until command');
-			if (until === 0) console.log('EXECUTING COMMAND NOW!', command);
+			if (until === 0) exec(command, close);
 			else timer = setTimeout(checkTime, 3000);
 		}
 	}
