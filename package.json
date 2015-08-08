@@ -7,7 +7,9 @@
     "del": "^1.2.0",
     "electron-packager": "^5.0.1",
     "electron-windows-installer": "^1.1.0",
+    "gulp-rename": "^1.2.2",
     "gulp-vulcanize": "^6.0.1",
+    "gulp-zip": "^3.0.2",
     "run-sequence": "^1.1.2"
   }
 }

@@ -1,6 +1,8 @@
 var exec = require('child_process').exec;
+var zip = require('gulp-zip');
 var del = require('del');
 var gulp = require('gulp');
+var rename = require('gulp-rename');
 var sequence = require('run-sequence');
 var packager = require('electron-packager');
 var vulcanize = require('gulp-vulcanize');
@@ -63,7 +65,7 @@ gulp.task('clean-up-before', function(cb) {
 });
 
 gulp.task('clean-up-after', function(cb) {
-	del([TEMP_BUILD_DIR, BUILD_DIR], cb);
+	del([TEMP_BUILD_DIR, BUILD_DIR, 'dist/RELEASES', 'dist/**/*.nupkg'], cb);
 });
 
 gulp.task('package', function(cb) {
@@ -89,10 +91,21 @@ gulp.task('package', function(cb) {
 	packager(opts, cb);
 });
 
+gulp.task('make-zip-windows', function() {
+	return gulp.src('build/Auto Shutdown-win32-ia32/**/*')
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname === '.'? 'AutoShutdown' : 'AutoShutdown/'+path.dirname;
+		}))
+		.pipe(zip('autoshutdown-windows-'+VERSION+'.zip'))
+		.pipe(gulp.dest('dist/'));
+});
+
 gulp.task('build', function(cb) {
 	sequence('clean-up-before',
 		['vulcanize', 'copy-files', 'copy-modules', 'copy-assets'],
-		'package', 'make-installer', 'clean-up-after', cb);
+		'package',
+		['make-installer', 'make-zip-windows'],
+		'clean-up-after', cb);
 });
 
 gulp.task('default', ['build']);
