@@ -3,6 +3,7 @@ var ipc = require('ipc');
 var exec = require('child_process').exec;
 var Window = require('browser-window');
 var startup = require('./modules/squirrel-startup.js');
+var version = require('./package.json').version;
 var mainWindow;
 var operationDate;
 var timer;
@@ -16,6 +17,7 @@ ipc.on('cancel', cancel);
 ipc.on('restart', restart);
 ipc.on('shutdown', shutdown);
 ipc.on('hibernate', hibernate);
+ipc.on('version?', sendVersion);
 ipc.on('seconds-left?', sendSeconds);
 ipc.on('open-dev-tools', devTools)
 
@@ -80,6 +82,10 @@ function secondsUntil(date) {
  */
 function sendSeconds(event) {
 	event.sender.send('seconds-left', secondsUntil(operationDate));
+}
+
+function sendVersion(event) {
+	event.sender.send('version', version);
 }
 
 /**

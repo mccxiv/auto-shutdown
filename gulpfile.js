@@ -15,12 +15,12 @@ gulp.task('make-installer', function() {
 	return winInstaller({
 		appDirectory: BUILD_DIR + '/Auto Shutdown-win32-ia32',
 		outputDirectory: DIST_DIR,
-		iconUrl: __dirname + '/src/assets/logo-gray.ico',
+		iconUrl: __dirname + '/build-assets/logo-gray.ico',
 		exe: 'Auto Shutdown.exe',
 		setupExe: 'Auto Shutdown Setup.exe',
 		authors: 'Mccxiv Software',
 		title: 'Auto Shutdown',
-		setupIcon: __dirname + '/src/assets/logo-gray.ico'
+		setupIcon: __dirname + '/build-assets/logo-gray.ico'
 	});
 });
 
@@ -69,7 +69,7 @@ gulp.task('package', function(cb) {
 		arch: 'ia32',
 		version: '0.30.2',
 		'app-version': VERSION,
-		icon: 'src/assets/logo-gray.ico',
+		icon: 'build-assets/logo-gray.ico',
 		'version-string': {
 			CompanyName: 'Mccxiv Software',
 			LegalCopyright: 'Copyright 2015 Andrea Stella. All rights reserved',
