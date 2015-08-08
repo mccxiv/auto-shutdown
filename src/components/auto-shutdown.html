@@ -71,6 +71,10 @@
             color: inherit;
             text-decoration: none;
         }
+
+        #info .logo {
+            width: 170px;
+        }
     </style>
 
     <template>
@@ -94,7 +98,7 @@
                 <div id="info" class="layout vertical center-center">
                     <paper-icon-button class="back-button" icon="arrow-back" on-click="back"></paper-icon-button>
                     <div class="info-content">
-                        <img src="../assets/logo-gray.png">
+                        <img class="logo" src="../assets/logo-gray.png">
                         <h1>Auto Shutdown v. <span>{{version}}</span></h1>
                         <a href="https://github.com/mccxiv/auto-shutdown" on-click="hrefClick">
                             <iron-icon icon="social-post:github"></iron-icon>

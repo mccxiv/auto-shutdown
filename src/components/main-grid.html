@@ -72,21 +72,19 @@
 
         .yellow-200 {background-color: var(--paper-yellow-200);}
         .yellow-500 {background-color: var(--paper-yellow-500);}
-        .grey-100 {background-color: var(--paper-grey-100);}
-        .grey-400 {background-color: var(--paper-grey-400);}
         .green-200 {background-color: var(--paper-green-200);}
         .green-500 {background-color: var(--paper-green-500);}
-        .deep-orange-300 {background-color: var(--paper-deep-orange-300);}
-        .deep-orange-600 {background-color: var(--paper-deep-orange-600);}
+        .deep-orange-200 {background-color: var(--paper-deep-orange-200);}
+        .deep-orange-500 {background-color: var(--paper-deep-orange-500);}
     </style>
 
     <template>
         <div class="cards">
-            <paper-material id="shutdown" class="grey-100" on-click="choose" data-operation="shutdown">
+            <paper-material id="shutdown" class="deep-orange-200" on-click="choose" data-operation="shutdown">
                 <div class="icon-container">
                     <iron-icon class="big-icon" icon="icons:power-settings-new"></iron-icon>
                 </div>
-                <div class="footer grey-400">
+                <div class="footer deep-orange-500">
                     <span class="flex">Shutdown</span>
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
@@ -109,15 +107,6 @@
                     <iron-icon icon="arrow-forward"></iron-icon>
                 </div>
             </paper-material>
-            <!--<div id="info" class="deep-orange-300" on-click="choose" data-operation="info">
-                <div class="icon-container">
-                    <iron-icon class="big-icon" icon="icons:info-outline"></iron-icon>
-                </div>
-                <div class="footer deep-orange-600">
-                    <span class="flex">Info</span>
-                    <iron-icon icon="arrow-forward"></iron-icon>
-                </div>
-            </div>-->
         </div>
     </template>
 
