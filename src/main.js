@@ -97,7 +97,7 @@ function load() {
 		'min-width': 480,
 		'min-height': 310,
 		width: 620,
-		height: 450,
+		height: 375,
 		title: 'Auto Shutdown',
 		'auto-hide-menu-bar': true
 	};
