@@ -13,13 +13,13 @@ module.exports = function() {
 
 		switch (squirrelCommand) {
 			case '--squirrel-install':
-				createShortcut = updateDotExe + ' --createShortcut=' + target + ' --shortcut-locations=Desktop,StartMenu';
+				createShortcut = updateDotExe + ' --createShortcut="' + target + '" --shortcut-locations=Desktop,StartMenu';
 				console.log (createShortcut);
 				execSync(createShortcut);
 				app.quit();
 				return true;
 			case '--squirrel-uninstall':
-				createShortcut = updateDotExe + ' --removeShortcut=' + target ;
+				createShortcut = updateDotExe + ' --removeShortcut="' + target + '"';
 				console.log (createShortcut);
 				execSync(createShortcut);
 				app.quit();

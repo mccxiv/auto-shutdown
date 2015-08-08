@@ -53,6 +53,11 @@ gulp.task('copy-modules', function() {
 		.pipe(gulp.dest(TEMP_BUILD_DIR+'/modules'));
 });
 
+gulp.task('copy-assets', function() {
+	return gulp.src(['src/assets/**'])
+		.pipe(gulp.dest(TEMP_BUILD_DIR+'/assets'));
+});
+
 gulp.task('clean-up-before', function(cb) {
 	del([TEMP_BUILD_DIR, BUILD_DIR, DIST_DIR], cb);
 });
@@ -85,7 +90,9 @@ gulp.task('package', function(cb) {
 });
 
 gulp.task('build', function(cb) {
-	sequence('clean-up-before', ['vulcanize', 'copy-files', 'copy-modules'], 'package', 'make-installer', 'clean-up-after', cb);
+	sequence('clean-up-before',
+		['vulcanize', 'copy-files', 'copy-modules', 'copy-assets'],
+		'package', 'make-installer', 'clean-up-after', cb);
 });
 
 gulp.task('default', ['build']);
