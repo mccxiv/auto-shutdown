@@ -15,11 +15,11 @@ var DIST_DIR = 'dist';
 
 gulp.task('make-installer', function() {
 	return winInstaller({
-		appDirectory: BUILD_DIR + '/Auto-Shutdown-win32-ia32',
+		appDirectory: BUILD_DIR + '/AutoShutdown-win32-ia32',
 		outputDirectory: DIST_DIR,
 		iconUrl: __dirname + '/build-assets/logo-gray.ico',
-		exe: 'Auto-Shutdown.exe',
-		setupExe: 'Auto Shutdown Setup.exe',
+		exe: 'AutoShutdown.exe',
+		setupExe: 'AutoShutdown-Setup-'+VERSION+'.exe',
 		authors: 'Mccxiv Software',
 		title: 'Auto Shutdown',
 		setupIcon: __dirname + '/build-assets/logo-gray.ico'
@@ -71,7 +71,7 @@ gulp.task('clean-up-after', function(cb) {
 gulp.task('package', function(cb) {
 	var opts = {
 		dir: 'vulcanized',
-		name: 'Auto-Shutdown',
+		name: 'AutoShutdown',
 		platform: 'all',
 		arch: 'ia32',
 		version: '0.30.2',
@@ -82,7 +82,6 @@ gulp.task('package', function(cb) {
 			LegalCopyright: 'Copyright 2015 Andrea Stella. All rights reserved',
 			ProductVersion: VERSION,
 			FileVersion: VERSION,
-			OriginalFilename: 'auto-shutdown.exe',
 			FileDescription: 'Auto Shutdown',
 			ProductName: 'Auto Shutdown'
 		},
@@ -92,11 +91,11 @@ gulp.task('package', function(cb) {
 });
 
 gulp.task('make-zip-windows', function() {
-	return gulp.src('build/Auto-Shutdown-win32-ia32/**/*')
+	return gulp.src('build/AutoShutdown-win32-ia32/**/*')
 		.pipe(rename(function(path) {
 			path.dirname = path.dirname === '.'? 'AutoShutdown' : 'AutoShutdown/'+path.dirname;
 		}))
-		.pipe(zip('autoshutdown-windows-'+VERSION+'.zip'))
+		.pipe(zip('AutoShutdown-win32-'+VERSION+'.zip'))
 		.pipe(gulp.dest('dist/'));
 });
 
