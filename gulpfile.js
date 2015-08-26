@@ -1,3 +1,9 @@
+/*
+	TODO - NOTE:
+	The standalone version is created using the Enigma Virtual Box
+	This step is not automated by this script
+*/
+
 var exec = require('child_process').exec;
 var zip = require('gulp-zip');
 var del = require('del');
