@@ -19,7 +19,7 @@ ipc.on('shutdown', shutdown);
 ipc.on('hibernate', hibernate);
 ipc.on('version?', sendVersion);
 ipc.on('seconds-left?', sendSeconds);
-ipc.on('open-dev-tools', devTools)
+ipc.on('open-dev-tools', devTools);
 
 function cancel() {
 	if (timer) clearTimeout(timer);
