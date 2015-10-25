@@ -3,6 +3,12 @@
   "dependencies": {
     "gulp": "^3.9.0"
   },
+  "author": {
+    "name": "Andrea Stella",
+    "email": "adr.stella@gmail.com",
+    "url": "http://mccxiv.me"
+  },
+  "license": "ISC",
   "devDependencies": {
     "del": "^1.2.0",
     "electron-packager": "^5.0.1",
