@@ -2,6 +2,7 @@
   "name": "Autoshutdown",
   "version": "0.0.1",
   "main": "main.js",
+  "private": true,
   "author": {
     "name": "Andrea Stella",
     "email": "adr.stella@gmail.com",
